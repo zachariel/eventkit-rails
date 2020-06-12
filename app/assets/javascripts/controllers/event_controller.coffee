@@ -14,7 +14,7 @@ EventKit.EventController = Em.Controller.extend({
 		if !msgid
 			return []
 
-		@store.find('event', {
+		@store.query('event', {
 			sg_message_id: msgid
 			sortby: "timestamp"
 		})

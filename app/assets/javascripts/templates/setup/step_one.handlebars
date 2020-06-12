@@ -1,0 +1,46 @@
+{{#unless isHttps}}
+	<div class="alert alert-danger" role="alert">
+		<strong>WARNING!</strong> You are currently on an unsecured connection.  Continuing will send your credentials unencrypted to your server, which can be intercepted by nefarious individuals.
+	</div>
+{{/unless}}
+
+<h4>Step 1 of {{setup.totalSteps}}</h4>
+
+<p>
+	Welcome to EventKit!  Before you get started, there's a few things we need to setup.
+</p>
+
+<p>
+	SendGrid's Event Webhook allows for <a href="https://sendgrid.com/docs/API_Reference/Webhooks/event.html#-Setup" target="_blank">Basic Authentication</a>.  Basic Authentication protects your endpoint with a username and password, which would be required for posting new events and also viewing the events.
+</p>
+
+<p>
+	To setup Basic Authentication, choose a username and password:
+</p>
+
+<form {{action 'submitBasicAuth' on='submit'}}>
+
+  <div class="form-group">
+    <label>Username</label>
+    {{input name="username" class="form-control" value=model.username}}
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    {{input name="password" class="form-control" type="password" value=model.password}}
+  </div>
+
+  <div class="form-group">
+    <label>Retype Password</label>
+    {{input name="confirmPassword" class="form-control" type="password" value=model.confirmPassword}}
+  </div>
+
+  {{#unless model.passwordMatches}}
+    <p style="color:#800 !important;">Your password entries don't match</p>
+  {{/unless}}
+
+  <div class="form-group" style="text-align:center;">
+    <input type="submit" />
+  </div>
+
+</form>

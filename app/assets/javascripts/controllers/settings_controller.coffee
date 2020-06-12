@@ -10,16 +10,17 @@ EventKit.SettingsController = Em.Controller.extend({
 		self = @
 
 		# Get the Autodelete Setting
-		@store.find('setting', {
+		@store.query('setting', {
 			name: "autodelete_time"
 		}).then((results)->
 			setting = results.get('firstObject')
 			value = setting.get('value') * 1
 			self.set('autodeleteSelectedValue', self.get('autodelete')[value])
+			console.log(self.get('autodeleteSelectedValue'))
 		)
 
 		# Get the user list
-		@store.find('user').then(
+		@store.findAll('user').then(
 			(users)->
 				self.set('loadedUsers', true)
 				if users then self.set('users', users.sortBy('username'))
@@ -33,7 +34,7 @@ EventKit.SettingsController = Em.Controller.extend({
 		protocol = window.location.protocol + "//"
 		hash = window.location.hash
 		url = window.location.href.replace(protocol, "").replace(hash, "")
-		return new Ember.Handlebars.SafeString "<pre><code>" + protocol + "[username]:[password]@" + url + "</code></pre>"
+		return new Ember.String.htmlSafe "<pre><code>" + protocol + "[username]:[password]@" + url + "</code></pre>"
 	).property()
 
 
@@ -111,28 +112,40 @@ EventKit.SettingsController = Em.Controller.extend({
 	users: null
 	loadedUsers: false
 
+	saving: false
 	showAddUser: false
 	newUser: EventKit.HttpBasicAuth.create()
+
+	validUser: (->
+		!@get('newUser').get('meetsCriteria')
+	).property('newUser.username', 'newUser.password', 'newUser.confirmPassword')
 
 	# ACTIONS
 	#=========================================================================#
 
 	actions: {
+		onAutodeleteSelected: (value)->
+			console.log(@get('autodelete')[value])
+			@set('autodeleteSelectedValue',  @get('autodelete')[value])
+
 		save: ()->
 			self = @
-			@store.find('setting', {
+			@set('saving', true)
+			@store.query('setting', {
 				name: "autodelete_time"
 			}).then((results)->
 				setting = results.get('firstObject')
 				setting.set('value', self.get('autodeleteSelectedValue.value'))
 				setting.save().then(()->
 					alert 'Your changes have been saved!'
+					self.set('saving', false)
 				)
 			)
 
 		toggleAddUser: ()->
 			@get('newUser').reset()
 			@set('showAddUser', !@get('showAddUser'))
+			false
 
 		addNewUser: ()->
 			if @get('newUser.meetsCriteria')

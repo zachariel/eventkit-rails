@@ -5,7 +5,7 @@
 # string.
 #
 
-Ember.Handlebars.helper('format-date', (unix)->
+EventKit.FormatDateHelper = Ember.Helper.helper((unix)->
 	date = new Date(unix * 1000)
 	date.toLocaleDateString() + " at " + date.toLocaleTimeString()
 )

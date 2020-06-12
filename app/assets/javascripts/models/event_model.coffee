@@ -37,7 +37,7 @@ EventKit.Event = DS.Model.extend({
 			rawObject = JSON.parse @get('raw')
 			raw = JSON.stringify rawObject, null, 2
 
-		return new Ember.Handlebars.SafeString("<pre><code>" + raw + "</code></pre>")
+		return new Ember.String.htmlSafe("<pre><code>" + raw + "</code></pre>")
 	).property('raw')
 
 	hasAdditionalArguments: (->
@@ -94,6 +94,6 @@ EventKit.Event = DS.Model.extend({
 						if @get('reason').match(regex)
 							reason = descriptions[type].replace('__EMAIL__', @get('email'));
 		
-		if reason then new Ember.Handlebars.SafeString(reason) else reason
+		if reason then new Ember.String.htmlSafe(reason) else reason
 	).property('event')
 })

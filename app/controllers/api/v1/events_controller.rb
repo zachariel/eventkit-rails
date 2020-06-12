@@ -11,7 +11,7 @@ class Api::V1::EventsController < ApplicationController
 	# SUMMARY:  Retrieves a list of all the Event records.
 	#
 	def index
-		query = params.except(:action, :controller, :offset, :limit, :descending, :sortby, :since, :like, :detailed, :format, :token)
+		query = params.except(:action, :controller, :offset, :limit, :descending, :sortby, :since, :like, :detailed, :format, :token).permit!
 
 		if params[:like] then
 			if params[:raw] then
@@ -143,7 +143,7 @@ class Api::V1::EventsController < ApplicationController
 		self.user_has_permissions(Permissions::VIEW) do
 			if Event.where(id: params[:id]).present? then
 				event = Event.find(params[:id])
-				render json: event
+				render json: { event: event }
 			else
 				render json: {
 					:message => :error,

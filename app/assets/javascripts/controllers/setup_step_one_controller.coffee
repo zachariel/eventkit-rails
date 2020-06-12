@@ -7,12 +7,12 @@
 
 EventKit.SetupStepOneController = Em.Controller.extend({
 
-	needs: ['setup']
+  setup:  Ember.inject.controller('setup')
 
 	actions: {
 		submitBasicAuth: ()->
-			if @get('controllers.setup.model.meetsCriteria')
-				@transitionToRoute('setupStepTwo')
+			if @get('model').get('meetsCriteria') #@get('controllers.setup.model.meetsCriteria')
+				@transitionToRoute('setup.StepTwo')
 	}
 
 })

@@ -14,7 +14,7 @@ EventKit.ApplicationController = EventKit.WildcardSearchController.extend({
 		goToSetup = ()->
 			self.set('isInSetup', true)
 			$('body').css('paddingTop', '0px').removeClass('standalone')
-			self.transitionToRoute('setupStepOne')
+			self.transitionToRoute('setup.StepOne')
 		if model and model.get('length')
 			if !(model.get('firstObject.value') * 1) then goToSetup()
 		else 
@@ -26,7 +26,7 @@ EventKit.ApplicationController = EventKit.WildcardSearchController.extend({
 			goToSetup()
 
 		if window.token and window.token.length
-			@set('user', @store.find("user", {
+			@set('user', @store.query("user", {
 				token: window.token
 			}).then((users)->
 				if users.get('length')

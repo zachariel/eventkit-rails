@@ -13,7 +13,7 @@ EventKit.SetupRoute = Em.Route.extend EventKit.ResetScroll, {
 	activate: ()->
 		@_super()
 		self = @
-		@store.find('setting', {
+		@store.query('setting', {
 			name: 'is_setup'
 		}).then((setup)->
 			if setup and setup.get('length')

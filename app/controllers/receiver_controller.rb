@@ -10,7 +10,7 @@ require 'permissions'
 
 class ReceiverController < ApplicationController
 
-	before_filter :header_check
+	before_action :header_check
 
 	include BCrypt
 

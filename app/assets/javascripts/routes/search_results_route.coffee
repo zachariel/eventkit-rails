@@ -15,7 +15,7 @@ EventKit.SearchResultsRoute = Em.Route.extend EventKit.ResetScroll, {
 		q = decodeURIComponent(query)
 		p = page * 1
 
-		@store.find('event', {
+		@store.query('event', {
 			limit: limit
 			offset: offset
 			like: true
@@ -29,7 +29,7 @@ EventKit.SearchResultsRoute = Em.Route.extend EventKit.ResetScroll, {
 			pagesArray = [{
 				query: query
 				page: 1
-				display: new Ember.Handlebars.SafeString("&laquo;")
+				display: new Ember.String.htmlSafe("&laquo;")
 			}]
 
 			padding = 3
@@ -49,7 +49,7 @@ EventKit.SearchResultsRoute = Em.Route.extend EventKit.ResetScroll, {
 			pagesArray.push {
 				query: query
 				page: totalPages
-				display: new Ember.Handlebars.SafeString("&raquo;")
+				display: new Ember.String.htmlSafe("&raquo;")
 			}
 
 			{

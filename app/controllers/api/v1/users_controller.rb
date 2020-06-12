@@ -14,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
 	#
 	def index
 		def find_users
-			query = params.except(:action, :controller, :offset, :limit, :descending, :sortby)
+			query = params.except(:action, :controller, :offset, :limit, :descending, :sortby).permit!
 
 			if query.keys.count then
 				# LOOK FOR SPECIFIC RECORDS
@@ -89,7 +89,7 @@ class Api::V1::UsersController < ApplicationController
 					record = User.create(properties)
 					record.issue_token
 					record.save
-					render json: record
+					return render json: { user: record  }
 				end
 			end
 		end
@@ -114,7 +114,7 @@ class Api::V1::UsersController < ApplicationController
 		self.user_has_permissions(Permissions::EDIT) do
 			if User.where(id: params[:id]).present? then
 				user = User.find(params[:id])
-				render json: user
+				render json: { user: user }
 			else
 				render json: {
 					:message => :error,

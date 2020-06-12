@@ -7,7 +7,7 @@
 
 EventKit.SetupStepThreeController = Em.Controller.extend({
 
-	needs: ['setup']
+	setup: Ember.inject.controller('setup')
 
 	actions: {
 		goToDashboard: ()->

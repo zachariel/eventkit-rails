@@ -5,12 +5,20 @@
 # specific fields to search on.
 #
 
-EventKit.DetailedSearchController = Em.ArrayController.extend({
+EventKit.DetailedSearchController = Em.Controller.extend({
+
+	readyToSearch: (->
+		console.log(@get('model').length)
+		@get('model').length == 0
+	).property('model.length')
 
 	actions: {
+		onEventSelected: (filter, event) ->
+			filter.selectedEvent = filter.events[event.target.selectedIndex]
+			return
 
 		removeFilter: (sender)->
-			@removeObject(sender)
+			@get('model').removeObject(sender)
 
 		addFilter: (type)->
 			types = []
@@ -27,9 +35,13 @@ EventKit.DetailedSearchController = Em.ArrayController.extend({
  				selectedEvent: null
  			}
 
+			if newFilter.id == 'event'
+				newFilter.selectedEvent = newFilter.events[0]
+
 			newFilter[type.id] = "id"
 
-			@addObject(newFilter)
+			@get('model').addObject(newFilter)
+			return
 
 		submitSearch: ()->
 			model = {}

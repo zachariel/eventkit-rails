@@ -7,41 +7,46 @@
 
 EventKit.SetupStepTwoController = Em.Controller.extend({
 
-	needs: ['setup']
+	setup: Ember.inject.controller('setup')
 
-	isSecure: (->
-		if window.location.protocol.match(/https/gi) then true else false
+	###
+	username: (->
+		@get('model').get('username')
+	).property()
+
+	password: (->
+		@get('model').get('password')
 	).property()
 
 	endpoint: (->
 		protocol = window.location.protocol + "//"
 		hash = window.location.hash
 		url = window.location.href.replace(protocol, "").replace(hash, "")
-		model = @get('controllers.setup.model')
+		model = @get('setup').get('model')
 		fullURL = protocol + encodeURIComponent(model.get('username')) + ":" + encodeURIComponent(model.get('password')) + "@" + url
-		return new Ember.Handlebars.SafeString '<pre><code>' + fullURL + '</code></pre>'
-	).property('controllers.setup.model.username', 'controllers.setup.model.password')
-
+		return new Ember.String.htmlSafe '<pre><code>' + fullURL + '</code></pre>'
+	).property('username', 'password')
+	###
 	actions: {
-		continue: ()->
-			u = @get('controllers.setup.model.username')
-			p = @get('controllers.setup.model.password')
+		nextStep: ()->
+			u = @get('setup').get('model').get('username') #@get('model').get('username')
+			p = @get('setup').get('model').get('password') #@get('model').get('password')
 
 			self = @
 
 			goToStepThree = ()->
-				self.get('controllers.setup.model').reset()
-				self.store.find('setting', {
+				self.get('setup').get('model').reset()
+				self.store.query('setting', {
 					name: "is_setup"
 				}).then((data)->
 					setting = data.get('firstObject')
 					setting.set('value', '1')
 					setting.save().then(()->
-						self.transitionToRoute('setupStepThree')
+						self.transitionToRoute('setup.StepThree')
 					)
 				)
 
-			@store.find('user', {
+			@store.query('user', {
 				username: u
 			}).then((setting)->
 				if setting and setting.get('length')

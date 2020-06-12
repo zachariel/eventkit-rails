@@ -9,7 +9,7 @@ require 'json'
 require 'permissions'
 
 class AssetsController < ApplicationController
-	before_filter :authenticate
+	before_action :authenticate
 
 	include BCrypt
 

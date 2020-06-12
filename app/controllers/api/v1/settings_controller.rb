@@ -9,7 +9,7 @@ class Api::V1::SettingsController < ApplicationController
 	# SUMMARY:  Retrieves a list of all the Setting records.
 	#
 	def index
-		query = params.except(:action, :controller, :offset, :limit, :descending, :sortby)
+    query = params.except(:action, :controller, :offset, :limit, :descending, :sortby).permit!
 
 		if query.keys.count then
 			# LOOK FOR SPECIFIC RECORDS

@@ -6,15 +6,22 @@
 
 EventKit.UserController = Em.Controller.extend {
 
-	needs: ['application']
+	application: Ember.inject.controller('application')
 
 	loggedInAs: (->
-		@get 'controllers.application.user'
-	).property('controllers.application.user.id')
+		@get 'application.user'
+	).property('application.user.id')
 
 	viewingLoggedInUser: (->
-		@get('controllers.application.user.id') == @get('model.id')
-	).property('controllers.application.user.id', 'model.id')
+		@get('application.user.id') == @get('model.id')
+	).property('application.user.id', 'model.id')
+
+	buttonClass: (->
+		if @get 'viewingLoggedInUser'
+			return 'col-md-6'
+		else
+			return 'col-md-4'
+	).property('viewingLoggedInUser')
 
 	actions: {
 

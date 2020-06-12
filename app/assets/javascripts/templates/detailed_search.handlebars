@@ -2,51 +2,51 @@
     <div class="panel-body">
         <h1 style="margin:0px;">Detailed Search</h1>
         <p style="margin-top: 0px;">Add filters below to narrow down your search:</p>
+				{{model.searchFilters}}
         <form class="form-horizontal" role="form" {{action "submitSearch" on="submit"}}>
-                {{#each this}}
-                    <div class="form-group">                
-                        <label class="col-md-2 control-label">{{name}}</label>
-                        {{#if additional_arguments}}
-                            <div class="col-md-4">
-                                {{input value=key class="form-control param-field" placeholder="Argument Key" type="text"}}
-                            </div>
-                            <div class="col-md-4">
-                                {{input value=val class="form-control param-field" placeholder="Argument Value" type="text"}}
-                            </div>
-                        {{else}}
-                            <div class="col-md-8">
-                                {{#if event}}
-                                    {{view "Ember.Select" content=events
-                                                          optionLabelPath="content.name"
-                                                          optionValuePath="content.type"
-                                                          class="form-control param-field"
-                                                          selection=selectedEvent
-                                    }}
-                                {{else}}
-                                    {{input value=val class="form-control param-field" placeholder=name type="text" name=id}}
-                                {{/if}}
-                            </div>
-                        {{/if}}
-                            
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" {{action "removeFilter" this}}>Remove Filter</button>
+            {{#each model as |filter|}}
+                <div class="form-group">
+                    <label class="col-md-2 control-label">{{filter.name}}</label>
+                    {{#if filter.additional_arguments}}
+                        <div class="col-md-4">
+                            {{input value=key class="form-control param-field" placeholder="Argument Key" type="text"}}
                         </div>
+                        <div class="col-md-4">
+                            {{input value=val class="form-control param-field" placeholder="Argument Value" type="text"}}
+                        </div>
+                    {{else}}
+                        <div class="col-md-8">
+                            {{#if filter.event}}
+															<select name="events" class="form-control param-field" onchange={{action "onEventSelected" filter}}>
+																{{#each filter.events as |event|}}
+																	 <option value={{event.type}}>{{event.name}}</option>
+																{{/each}}
+															</select>
+                            {{else}}
+                                {{input value=filter.val class="form-control param-field" placeholder=filter.name type="text" name=filter.id}}
+                            {{/if}}
+                        </div>
+                    {{/if}}
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger" {{action "removeFilter" filter}}>Remove Filter</button>
                     </div>
-                    <hr class="visible-xs visible-sm hidden-md hidden-lg col-md-12" />
-                {{/each}}
+                </div>
+                <hr class="visible-xs visible-sm hidden-md hidden-lg col-md-12" />
+            {{/each}}
         </form>
-        
+
         <div class="btn-group">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Add Filter <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" id="add_filter_menu">
-                {{#each allFilters}}
-                    <li><a href="#" {{action "addFilter" this}}>{{name}}</a></li>
+                {{#each allFilters as |filter|}}
+                    <li><a href="#" {{action "addFilter" filter}}>{{filter.name}}</a></li>
                 {{/each}}
             </ul>
         </div>
 
-        <button type="button" class="btn btn-success" {{action "submitSearch"}}>Search</button>
+        <button type="button" class="btn btn-success" {{action "submitSearch"}} disabled={{readyToSearch}}>Search</button>
     </div>
 </div>

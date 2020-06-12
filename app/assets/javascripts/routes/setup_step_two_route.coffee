@@ -7,8 +7,7 @@
 
 EventKit.SetupStepTwoRoute = Em.Route.extend EventKit.ResetScroll, {
 
-	setupController: (controller, model)->
-		if !controller.get('controllers.setup.model.meetsCriteria')
-			@transitionTo('setupStepOne')
-
+	setupController: (controller, model) ->
+			unless model.get('meetsCriteria') #@get('controllers.setup.model.meetsCriteria')
+				@transitionTo('setup.StepOne')
 }

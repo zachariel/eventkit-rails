@@ -68,11 +68,11 @@
 					</div>
 				{{/unless}}
 
-				<div {{bind-attr class="viewingLoggedInUser:col-md-6:col-md-4"}}>
+				<div class="{{buttonClass}}">
 					<button {{action 'cancel'}} class="btn-block btn btn-default" style="margin-bottom: 10px;">Cancel</button>	
 				</div>
 
-				<div {{bind-attr class="viewingLoggedInUser:col-md-6:col-md-4"}}>
+				<div class="{{buttonClass}}">
 					<button {{action 'save'}} class="btn-block btn btn-info" style="margin-bottom: 10px;">Update User</button>	
 				</div>
 

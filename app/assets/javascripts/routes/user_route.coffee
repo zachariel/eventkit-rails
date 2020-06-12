@@ -9,7 +9,7 @@ EventKit.UserRoute = Em.Route.extend EventKit.ResetScroll, {
 
 	model: (params)->
 		self = @
-		@store.find('user', params.id).then(
+		@store.findRecord('user', params.id).then(
 			(user)->
 				user
 			()->
